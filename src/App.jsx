@@ -1,571 +1,439 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Mail,
-  ExternalLink,
-  Microscope,
+  ArrowRight,
+  ArrowUpRight,
   Dna,
-  Globe2,
-  Camera,
-  Menu,
-  X,
-  Map,
+  ExternalLink,
   FlaskConical,
+  Globe2,
+  Mail,
+  Map,
+  Menu,
+  Microscope,
   Mouse,
   Waves,
-  ArrowUpRight,
+  X,
 } from "lucide-react";
 
 const navItems = [
-  { label: "Research Focus", href: "#research-focus" },
-  { label: "Projects", href: "#current-projects" },
-  { label: "Writing", href: "#writing" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home / About", href: "/" },
+  { label: "Research", href: "/research/" },
+  { label: "Projects", href: "/projects/" },
+  { label: "Publications", href: "/publications/" },
+  { label: "Gallery", href: "/gallery/" },
 ];
 
 const researchInterests = [
   {
     number: "01",
-    icon: <Microscope className="h-5 w-5" />,
-    title: "Metabolic Phenotypes",
-    text: "I use NMR and mass spectrometry technologies to quantify metabolic phenotypes and apply different computational and statistical methods to make sense of these complex data.",
+    icon: Microscope,
+    title: "Metabolic phenotypes",
+    text: "I use NMR and mass spectrometry technologies to quantify metabolic phenotypes, then apply computational and statistical methods to make sense of these complex data.",
   },
   {
     number: "02",
-    icon: <Dna className="h-5 w-5" />,
-    title: "Gene × Environment Interactions",
-    text: "I am interested in the context dependency of metabolic phenotypes: how much is dictated by environment, genetics, and their interaction.",
+    icon: Dna,
+    title: "Gene × environment interactions",
+    text: "I am interested in the context dependence of metabolic phenotypes: how much is shaped by environment, genetics, and their interaction.",
   },
   {
     number: "03",
-    icon: <Globe2 className="h-5 w-5" />,
-    title: "Beyond the Western World",
-    text: "My work is focused on communities with lifestyles divergent from the Western lifestyle and how lifestyle shifts affect metabolic phenotypes.",
+    icon: Globe2,
+    title: "Beyond the Western world",
+    text: "My work focuses on communities whose lifestyles differ from Western lifestyles and on how lifestyle shifts affect metabolic phenotypes.",
   },
 ];
 
 const currentProjects = [
   {
-    icon: <Map className="h-5 w-5" />,
+    icon: Map,
     eyebrow: "Population biology",
     title: "Turkana health and lifestyle transitions",
-    text: "Studying how unique lifestyles and rapid lifestyle change reshapes metabolism and cardiometabolic disease risk.",
-    image: "images/turkana_machine.jpg",
+    text: "Studying how unique lifestyles and rapid lifestyle change reshape metabolism and cardiometabolic disease risk.",
+    image: "/images/turkana_machine.jpg",
+    alt: "Field research equipment used during work in Turkana",
   },
   {
-    icon: <FlaskConical className="h-5 w-5" />,
+    icon: FlaskConical,
     eyebrow: "Molecular phenotyping",
     title: "Targeted and untargeted metabolomics and lipidomics",
-    text: "I have used mass spec and NMR-based metabolomic approaches to quantify hundreds of metabolic phenotypes",
-    image: "images/network_node.png",
+    text: "Using mass spectrometry- and NMR-based metabolomic approaches to quantify hundreds of metabolic phenotypes.",
+    image: "/images/network_node.png",
+    alt: "Metabolic network visualization",
   },
   {
-    icon: <Waves className="h-5 w-5" />,
+    icon: Waves,
     eyebrow: "Lipid biology",
     title: "Lipoprotein subclasses, diet, and inflammation",
-    text: "Using current high resolution NMR technology I am investigating how Lipoprotein dynamics vary across contexts.",
-    image: "images/apolipo.png",
+    text: "Using high-resolution NMR technology to investigate how lipoprotein dynamics vary across contexts.",
+    image: "/images/apolipo.png",
+    alt: "Illustration of apolipoprotein structure and lipid transport",
   },
   {
-    icon: <Mouse className="h-5 w-5" />,
+    icon: Mouse,
     eyebrow: "Experimental models",
-    title: "Animal models for studying metabolism.",
+    title: "Animal models for studying metabolism",
     text: "Testing inflammation-driven metabolic remodeling under controlled experimental conditions.",
-    image: "images/Mouse_model.png",
+    image: "/images/Mouse_model.png",
+    alt: "Diagram of an experimental mouse model",
   },
 ];
 
 const publications = [
   {
-    title:
-      "Built environment is a key driver of cardiometabolic health in two Indigenous groups undergoing rapid lifestyle change.",
-    authors:
-      "Watowich M. M., Arner A. M., Wang S., John E., Kahumbu J. C., Kinyua P., Lopurudoi A., Lotukoi F., Mwai C. M., Muhoya B., et al.",
+    title: "Built environment is a key driver of cardiometabolic health in two Indigenous groups undergoing rapid lifestyle change.",
+    authors: "Watowich M. M., Arner A. M., Wang S., John E., Kahumbu J. C., Kinyua P., Lopurudoi A., Lotukoi F., Mwai C. M., Muhoya B., et al.",
   },
   {
-    title:
-      "Urbanization exacerbates age-associated declines in cardiometabolic health in Turkana and Orang Asli.",
-    authors:
-      "Watowich M. M., Brassington L., Longtin A., Wang S., Rossow R., Reinhardt K. D., John E., Kahumbu J. C., Kinyua P., Lopurudoi A., Lotukoi F., Miano C., Muhoya B., et al.",
+    title: "Urbanization exacerbates age-associated declines in cardiometabolic health in Turkana and Orang Asli.",
+    authors: "Watowich M. M., Brassington L., Longtin A., Wang S., Rossow R., Reinhardt K. D., John E., Kahumbu J. C., Kinyua P., Lopurudoi A., Lotukoi F., Miano C., Muhoya B., et al.",
   },
   {
-    title:
-      "Adaptations to water stress and pastoralism.",
-    authors:
-      "Lea A. J., Caldas I. V., Garske K. M., Kahumbu J., Kinyua P., Miano C., Muhoya B., Peng J., Rabinowitz J. D., Roichman A., et al.",
+    title: "Adaptations to water stress and pastoralism.",
+    authors: "Lea A. J., Caldas I. V., Garske K. M., Kahumbu J., Kinyua P., Miano C., Muhoya B., Peng J., Rabinowitz J. D., Roichman A., et al.",
   },
   {
-    title:
-      "Socioeconomic status effects on health vary between rural and urban Turkana.",
-    authors:
-      "Lea A. J., Waigwa C., Muhoya B., Lotukoi F., Peng J., Henry L., Abhyankar V., et al.",
+    title: "Socioeconomic status effects on health vary between rural and urban Turkana.",
+    authors: "Lea A. J., Waigwa C., Muhoya B., Lotukoi F., Peng J., Henry L., Abhyankar V., et al.",
   },
   {
-    title:
-      "Sex differences in immune function and disease risk are not easily explained by an evolutionary mismatch.",
-    authors:
-      "Arner A. M., Muhoya B., Snyder-Mackler N., Ayroles J. F., & Lea A. J.",
+    title: "Sex differences in immune function and disease risk are not easily explained by an evolutionary mismatch.",
+    authors: "Arner A. M., Muhoya B., Snyder-Mackler N., Ayroles J. F., & Lea A. J.",
   },
+];
+
+const galleryImages = [
+  { src: "/images/cshl.jpg", caption: "Meetings and learning" },
+  { src: "/images/teaching_field_course.jpg", caption: "Heading to Turkana with Emma and Thomas" },
+  { src: "/images/turkana_landscape.jpg", caption: "A warm welcome from the Turkana" },
+  { src: "/images/turkana_machine.jpg", caption: "Real-time lifestyle transitions" },
+  { src: "/images/Turkana_home.jpg", caption: "A unique lifestyle" },
+  { src: "/images/presentation.jpg", caption: "Presenting our work at Mpala Research Centre" },
+  { src: "/images/lab_microscope.jpg", caption: "The Laikipia Governor visits the lab" },
+  { src: "/images/snow_princeton.jpg", caption: "Meeting a snowwoman for the first time at Princeton" },
+  { src: "/images/lab_photo.jpg", caption: "The lab, where the magic happens" },
+  { src: "/images/podcast_princeton.jpg", caption: "Science communication" },
+  { src: "/images/fieldwork_turkana_group.jpg", caption: "The field team in Kenya" },
+  { src: "/images/ayroles_lab.jpg", caption: "The Ayroles Lab" },
 ];
 
 const formatAuthors = (authors) =>
   authors.split(/(Muhoya)/gi).map((part, index) =>
     part.toLowerCase() === "muhoya" ? (
-      <strong key={`${part}-${index}`} className="font-semibold text-black">
-        MUHOYA
-      </strong>
-    ) : (
-      part
-    ),
+      <strong key={`${part}-${index}`} className="font-semibold text-[#20231f]">Muhoya</strong>
+    ) : part,
   );
 
-const galleryImages = [
-  { src: "images/cshl.jpg", caption: "Meetings and Learning" },
-  { src: "images/teaching_field_course.jpg", caption: "Heading to Turkana; Emma and Thomas" },
-  { src: "images/turkana_landscape.jpg", caption: "A warm welcome from the Turkana" },
-  { src: "images/turkana_machine.jpg", caption: "Real time lifestyle Transitions" },
-  { src: "images/Turkana_home.jpg", caption: "A Unique Lifestyle" },
-  { src: "images/presentation.jpg", caption: "Presenting our work at Mpala Research Center" },
-  { src: "images/lab_microscope.jpg", caption: "Laikipia Governor visits the Lab" },
-  { src: "images/snow_princeton.jpg", caption: "First time meeting a SnowWoman @ Princeton" },
-  { src: "images/lab_photo.jpg", caption: "The lab, where all the magic happens" },
-  { src: "images/podcast_princeton.jpg", caption: "Science communication" },
-  { src: "images/fieldwork_turkana_group.jpg", caption: "The Field Team in Kenya" },
-  { src: "images/ayroles_lab.jpg", caption: "The Ayroles Lab" },
-];
-
-
-const tags = [
-  "metabolism",
-  "human health",
-  "inflammation",
-  "lifestyle transitions",
-];
+const pageForPath = (pathname) => {
+  const normalized = pathname.replace(/index\.html$/, "").replace(/\/+$/, "") || "/";
+  return {
+    "/": "home",
+    "/research": "research",
+    "/projects": "projects",
+    "/publications": "publications",
+    "/gallery": "gallery",
+  }[normalized];
+};
 
 const ImageBlock = ({ src, alt, className = "", imgClassName = "" }) => (
   <figure className={`overflow-hidden bg-[#e9eadf] ${className}`}>
-    <img
-      src={src}
-      alt={alt}
-      loading="lazy"
-      className={`h-full w-full object-cover ${imgClassName}`}
-    />
+    <img src={src} alt={alt} loading="lazy" className={`h-full w-full object-cover ${imgClassName}`} />
   </figure>
 );
 
-const SectionKicker = ({ children }) => (
-  <p className="mb-6 text-4xl font-semibold uppercase tracking-[0.18em] text-[#8a6f2c] sm:text-5xl">
-    {children}
-  </p>
-);
-
 const LinkButton = ({ href, children, variant = "solid", external = false }) => {
-  const base =
-    "inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition";
-  const styles =
-    variant === "outline"
-      ? "border border-[#9aaa88]/50 bg-white/70 text-[#263028] hover:border-[#8a6f2c] hover:bg-[#f8f2df]"
-      : "bg-[#637357] text-white shadow-sm hover:bg-[#4f6046]";
-
+  const styles = variant === "outline"
+    ? "border border-[#9aaa88]/50 bg-white/70 text-[#263028] hover:border-[#8a6f2c] hover:bg-[#f8f2df]"
+    : "bg-[#637357] text-white shadow-sm hover:bg-[#4f6046]";
   return (
-    <a
-      href={href}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noreferrer" : undefined}
-      className={`${base} ${styles}`}
-    >
+    <a href={href} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined}
+      className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition ${styles}`}>
       {children}
     </a>
   );
 };
 
-export default function PersonalWebsite() {
+const SectionKicker = ({ children }) => (
+  <p className="mb-5 text-xs font-semibold uppercase tracking-[0.24em] text-[#8a6f2c]">{children}</p>
+);
+
+function SiteHeader({ page }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-
   return (
-    <div className="min-h-screen bg-[#fbfaf4] text-[#20231f]">
-      <header className="fixed left-0 top-0 z-50 w-full border-b border-[#20231f]/10 bg-[#fbfaf4]/90 backdrop-blur-xl">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <a href="#home" className="group inline-flex items-center gap-3">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#8fa37d] transition group-hover:bg-[#b78b35]" />
-            <span className="text-sm font-semibold uppercase tracking-[0.18em] text-[#20231f]">
-              Benjamin Muhoya
-            </span>
-          </a>
-
-          <div className="hidden items-center gap-1 rounded-full border border-[#20231f]/10 bg-white/70 p-1 md:flex">
+    <header className="fixed left-0 top-0 z-50 w-full border-b border-[#20231f]/10 bg-[#fbfaf4]/90 backdrop-blur-xl">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8" aria-label="Primary navigation">
+        <a href="/" className="group inline-flex items-center gap-3">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#8fa37d] transition group-hover:bg-[#b78b35]" />
+          <span className="text-sm font-semibold uppercase tracking-[0.16em] text-[#20231f]">Benjamin Muhoya</span>
+        </a>
+        <div className="hidden items-center gap-1 rounded-full border border-[#20231f]/10 bg-white/70 p-1 md:flex">
+          {navItems.map((item) => (
+            <a key={item.href} href={item.href} aria-current={page === pageForPath(item.href) ? "page" : undefined}
+              className={`rounded-full px-4 py-2 text-sm transition ${page === pageForPath(item.href) ? "bg-[#637357] text-white" : "text-[#4c5348] hover:bg-[#e9eadf] hover:text-[#20231f]"}`}>
+              {item.label}
+            </a>
+          ))}
+        </div>
+        <button type="button" onClick={() => setMobileOpen((open) => !open)}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#20231f]/10 bg-white text-[#20231f] md:hidden"
+          aria-label={mobileOpen ? "Close navigation" : "Open navigation"} aria-expanded={mobileOpen} aria-controls="mobile-navigation">
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </nav>
+      {mobileOpen && (
+        <div id="mobile-navigation" className="border-t border-[#20231f]/10 bg-[#fbfaf4] px-4 py-4 md:hidden">
+          <div className="flex flex-col gap-2">
             {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="rounded-full px-4 py-2 text-sm text-[#4c5348] transition hover:bg-[#e9eadf] hover:text-[#20231f]"
-              >
+              <a key={item.href} href={item.href} aria-current={page === pageForPath(item.href) ? "page" : undefined}
+                className={`rounded-2xl px-4 py-3 text-sm font-medium shadow-sm ${page === pageForPath(item.href) ? "bg-[#637357] text-white" : "bg-white text-[#4c5348]"}`}>
                 {item.label}
               </a>
             ))}
           </div>
+        </div>
+      )}
+    </header>
+  );
+}
 
-          <button
-            type="button"
-            onClick={() => setMobileOpen((open) => !open)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#20231f]/10 bg-white text-[#20231f] md:hidden"
-            aria-label="Toggle navigation"
-          >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </nav>
+function PageIntro({ kicker, title, text }) {
+  return (
+    <section className="px-4 pb-12 pt-32 sm:px-6 sm:pb-16 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <SectionKicker>{kicker}</SectionKicker>
+        <div className="grid gap-7 lg:grid-cols-[1.12fr_0.88fr] lg:items-end">
+          <h1 className="max-w-4xl text-5xl font-semibold leading-[0.98] tracking-[-0.05em] sm:text-6xl">{title}</h1>
+          <p className="max-w-2xl text-lg leading-8 text-[#5d6658]">{text}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-        {mobileOpen && (
-          <div className="border-t border-[#20231f]/10 bg-[#fbfaf4] px-4 py-4 md:hidden">
-            <div className="flex flex-col gap-2">
-              {navItems.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="rounded-2xl bg-white px-4 py-3 text-sm font-medium text-[#4c5348] shadow-sm"
-                >
-                  {item.label}
-                </a>
-              ))}
-            </div>
+function ProfileContact() {
+  return (
+    <section className="px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="profile-contact-title">
+      <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[2.4rem] border border-[#20231f]/10 bg-[#eef0e6] shadow-sm lg:grid-cols-[0.72fr_1.28fr]">
+        <ImageBlock src="/images/Cover_home_page.jpg" alt="Benjamin Muhoya in the laboratory"
+          className="h-[360px] rounded-none lg:h-full lg:min-h-[470px]" imgClassName="object-[center_42%]" />
+        <div className="p-8 sm:p-10 lg:p-12">
+          <SectionKicker>Profile & contact</SectionKicker>
+          <h2 id="profile-contact-title" className="text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">Benjamin Muhoya</h2>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-[#4c5348]">PhD student in Ecology and Evolutionary Biology studying metabolic phenotypes and their environmental and genetic context.</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <LinkButton href="mailto:bm0211@princeton.edu"><Mail className="h-4 w-4" />Email</LinkButton>
+            <LinkButton href="https://scholar.google.com/citations?user=0tp-g1cAAAAJ&hl=en&oi=ao" variant="outline" external>Google Scholar <ExternalLink className="h-4 w-4" /></LinkButton>
+            <LinkButton href="https://orcid.org/0000-0003-2228-3649" variant="outline" external>ORCID <ExternalLink className="h-4 w-4" /></LinkButton>
+            <LinkButton href="https://www.linkedin.com/in/benjamin-muhoya/" variant="outline" external>LinkedIn <ExternalLink className="h-4 w-4" /></LinkButton>
+            <LinkButton href="/Benjamin_Muhoya_CV.pdf" variant="outline" external>View CV <ArrowUpRight className="h-4 w-4" /></LinkButton>
           </div>
-        )}
-      </header>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-      <main>
-        <section id="home" className="relative overflow-hidden px-4 pt-28 sm:px-6 lg:px-8">
-          <div className="pointer-events-none absolute left-0 top-0 h-[480px] w-[480px] rounded-full bg-[#e9eadf] blur-3xl" />
-          <div className="pointer-events-none absolute right-0 top-24 h-[360px] w-[360px] rounded-full bg-[#f1dfb6] blur-3xl" />
-
-          <div className="relative mx-auto grid max-w-7xl gap-10 pb-20 pt-8 lg:grid-cols-[1.08fr_0.92fr] lg:pb-28">
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              className="flex flex-col justify-center"
-            >
-
-              <h1 className="max-w-4xl text-5xl font-semibold leading-[0.96] tracking-[-0.055em] text-[#20231f] sm:text-6xl lg:text-7xl">
-                Studying how different environments shape human biology.
-              </h1>
-
-              <p className="mt-8 max-w-2xl text-lg leading-8 text-[#4c5348]">
-                I am a PhD student currently pursuing my doctorate in Ecology and Evolutionary Biology.
-                My first degree was in Medical Laboratory Science, and over the years, I have gained
-                extensive experience spanning remote fieldwork, several wet-lab techniques, and
-                computational data analysis. My research focuses on metabolic phenotypes and the context
-                dependence of these phenotypes; that is, how they are affected by the environment vs.
-                genotypes.
-              </p>
-
-              <div className="mt-10 flex flex-wrap gap-3">
-                <LinkButton href="#research-focus">Research Interests</LinkButton>
-                <LinkButton href="Benjamin_Muhoya_CV.pdf" variant="outline">
-                  Download CV <ArrowUpRight className="h-4 w-4" />
-                </LinkButton>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="relative"
-            >
-              <div className="absolute -left-4 top-10 hidden h-28 w-28 rounded-full border border-[#8fa37d]/40 lg:block" />
-              <div className="absolute -right-4 bottom-16 hidden h-20 w-20 rounded-full bg-[#d9c27c]/30 lg:block" />
-
-              <div className="grid gap-4 sm:grid-cols-[0.86fr_1.14fr] lg:min-h-[660px]">
-                <div className="flex flex-col gap-4 sm:pt-20">
-                  <ImageBlock
-                    src="images/Science_cover.png"
-                    alt="Turkana landscape"
-                    className="h-72 rounded-[2rem] border border-[#20231f]/10 shadow-sm"
-                  />
-                  <div className="rounded-[2rem] border border-[#20231f]/10 bg-[#eef0e6] p-6">
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#8a6f2c]">
-                      Science Cover
-                    </p>
-                    <p className="mt-3 text-sm leading-7 text-[#4c5348]">
-                      The genetic basis of dehydration reselience in the Turkana People of Northern Kenya. 
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  <ImageBlock
-                    src="images/Cover_home_page.jpg"
-                    alt="Benjamin Muhoya"
-                    className="h-[460px] rounded-[2.6rem] border border-[#20231f]/10 shadow-sm sm:h-[620px]"
-                  />
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        <section id="research-focus" className="px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr]">
-              <div className="lg:sticky lg:top-28 lg:self-start">
-                <SectionKicker>Research Focus</SectionKicker>
-                <h2 className="max-w-lg text-4xl font-semibold leading-tight tracking-[-0.04em] sm:text-5xl">
-                  Gene × environment interactions, read through metabolism.
-                </h2>
-                <p className="mt-6 text-lg leading-8 text-[#5d6658]">
-                  My research connects lifestyle variation, metabolomics, genomics and computational
-                  analysis to understand how lifestyle transitions reshape human metabolism.
-                </p>
-              </div>
-
-              <div className="relative">
-                <div className="absolute left-8 top-0 hidden h-full w-px bg-[#20231f]/10 sm:block" />
-
-                <div className="space-y-8">
-                  {researchInterests.map((item, index) => (
-                    <motion.article
-                      key={item.title}
-                      initial={{ opacity: 0, y: 18 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-80px" }}
-                      transition={{ duration: 0.5, delay: index * 0.08 }}
-                      className={`relative rounded-[2rem] border border-[#20231f]/10 bg-white p-6 shadow-sm sm:ml-16 sm:p-8 ${
-                        index === 1 ? "sm:translate-x-8" : ""
-                      }`}
-                    >
-                      <div className="absolute -left-[4.55rem] top-8 hidden h-10 w-10 items-center justify-center rounded-full border border-[#8fa37d]/50 bg-[#fbfaf4] text-xs font-bold text-[#637357] sm:flex">
-                        {item.number}
-                      </div>
-
-                      <div className="mb-5 flex items-center gap-3">
-                        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#eef0e6] text-[#637357]">
-                          {item.icon}
-                        </span>
-                      </div>
-
-                      <h3 className="text-2xl font-semibold tracking-[-0.02em] text-[#20231f]">
-                        {item.title}
-                      </h3>
-                      <p className="mt-4 max-w-2xl text-base leading-8 text-[#4c5348]">
-                        {item.text}
-                      </p>
-                    </motion.article>
-                  ))}
-                </div>
-
-                <div className="mt-10 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-                  <ImageBlock
-                    src="images/lifestyle_graphic.png"
-                    alt="Lifestyle transition research graphic"
-                    className="h-[320px] rounded-[2rem] border border-[#20231f]/10 bg-white p-2 shadow-sm"
-                  />
-                  <div className="rounded-[2rem] border border-[#20231f]/10 bg-[#f7efd9] p-7">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#8a6f2c]">
-                      Overarching Question
-                    </p>
-                    <p className="mt-4 text-2xl font-semibold leading-snug tracking-[-0.03em] text-[#20231f]">
-                      How do unique lifestyles shape the metabolome and what happens to metabolic health during and after lifestyle transitions?
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="current-projects" className="px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+function HomePage() {
+  return (
+    <>
+      <section className="relative overflow-hidden px-4 pb-14 pt-32 sm:px-6 lg:px-8">
+        <div className="pointer-events-none absolute left-0 top-0 h-[420px] w-[420px] rounded-full bg-[#e9eadf] blur-3xl" />
+        <div className="relative mx-auto max-w-7xl">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <SectionKicker>Human biology in context</SectionKicker>
+            <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+              <h1 className="max-w-5xl text-5xl font-semibold leading-[0.96] tracking-[-0.055em] sm:text-6xl lg:text-7xl">Studying how different environments shape human biology.</h1>
               <div>
-                <SectionKicker>Current Projects</SectionKicker>
-                <h2 className="max-w-3xl text-4xl font-semibold leading-tight tracking-[-0.04em] sm:text-5xl">
-                </h2>
+                <p className="text-lg leading-8 text-[#4c5348]">I am a PhD student in Ecology and Evolutionary Biology. I combine fieldwork, wet-lab methods, and computational analysis to study metabolic phenotypes and how they are shaped by environments, genetics, and their interaction.</p>
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <LinkButton href="/research/">Explore my research <ArrowRight className="h-4 w-4" /></LinkButton>
+                  <LinkButton href="/Benjamin_Muhoya_CV.pdf" variant="outline" external>View CV <ArrowUpRight className="h-4 w-4" /></LinkButton>
+                </div>
               </div>
-              <p className="max-w-md text-base leading-8 text-[#5d6658]">
-              </p>
             </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
+            className="relative mt-12 min-h-[520px] overflow-hidden rounded-[2.6rem] border border-[#20231f]/10 bg-[#20231f] shadow-sm sm:min-h-[620px]">
+            <img src="/images/in_the_field.jpg" alt="Field camp during research in Turkana" className="absolute inset-0 h-full w-full object-cover opacity-75" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#1f271e]/95 via-[#293328]/62 to-transparent" />
+            <div className="relative z-10 flex min-h-[520px] max-w-2xl flex-col justify-end p-7 text-white sm:min-h-[620px] sm:p-12 lg:p-16">
+              <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#f0d38c]">Fieldwork × human biology × metabolism</p>
+              <h2 className="mt-4 text-5xl font-semibold tracking-[-0.05em] sm:text-7xl">Metabolomics</h2>
+              <p className="mt-5 max-w-xl text-base leading-8 text-white/85 sm:text-lg">Following the biological signatures of lifestyle and environment—from field settings to molecular phenotypes.</p>
+            </div>
+            <div className="absolute right-5 top-5 hidden w-[38%] overflow-hidden rounded-[2rem] border border-white/40 bg-white/90 p-3 shadow-2xl sm:block lg:right-10 lg:top-10">
+              <img src="/images/network_node.png" alt="Metabolic network visualization" className="aspect-[4/3] w-full rounded-[1.35rem] object-cover" />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+      <section className="px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-5 md:grid-cols-3">
+          {researchInterests.map((item) => {
+            const Icon = item.icon;
+            return (
+              <article key={item.title} className="rounded-[2rem] border border-[#20231f]/10 bg-white p-7 shadow-sm">
+                <Icon className="h-5 w-5 text-[#637357]" />
+                <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em]">{item.title}</h2>
+                <p className="mt-3 text-sm leading-7 text-[#5d6658]">{item.text}</p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </>
+  );
+}
 
-            <div className="grid gap-5 lg:grid-cols-4 lg:grid-rows-[auto_auto]">
-              {currentProjects.map((project, index) => (
-                <motion.article
-                  key={project.title}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.5, delay: index * 0.08 }}
-                  className={`group overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white shadow-sm ${
-                    index === 0
-                      ? "lg:col-span-2"
-                      : index === 1
-                        ? "lg:col-span-2"
-                        : "lg:col-span-2"
-                  }`}
-                >
-                  <div className="grid min-h-full gap-0 sm:grid-cols-[0.92fr_1.08fr]">
-                    <ImageBlock
-                      src={project.image}
-                      alt={project.title}
-                      className="h-64 rounded-none sm:h-full"
-                      imgClassName="transition duration-700 group-hover:scale-[1.03]"
-                    />
-                    <div className="flex flex-col justify-between p-7">
-                      <div>
-                        <div className="mb-5 flex items-center justify-between gap-4">
-                          <span className="inline-flex items-center gap-2 rounded-full bg-[#eef0e6] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#637357]">
-                            {project.icon}
-                            {project.eyebrow}
-                          </span>
-                        </div>
-
-                        <h3 className="text-2xl font-semibold leading-tight tracking-[-0.03em]">
-                          {project.title}
-                        </h3>
-                        <p className="mt-4 text-base leading-8 text-[#4c5348]">{project.text}</p>
-                      </div>
-
-                      <div className="mt-8 h-px w-full bg-gradient-to-r from-[#8fa37d] via-[#d9c27c] to-transparent" />
-                    </div>
+function ResearchPage() {
+  return (
+    <>
+      <PageIntro kicker="Research" title="Gene × environment interactions, read through metabolism."
+        text="My research connects lifestyle variation, metabolomics, genomics, and computational analysis to understand how human metabolic phenotypes vary across contexts." />
+      <section className="px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.82fr_1.18fr]">
+          <div className="overflow-hidden rounded-[2.3rem] border border-[#20231f]/10 bg-white p-3 shadow-sm lg:sticky lg:top-28 lg:h-fit">
+            <ImageBlock src="/images/lifestyle_graphic.png" alt="Graphic contrasting pastoral and urban lifestyles" className="h-[340px] rounded-[1.7rem]" imgClassName="object-contain" />
+            <div className="p-5 sm:p-7">
+              <SectionKicker>Overarching question</SectionKicker>
+              <p className="text-2xl font-semibold leading-snug tracking-[-0.03em]">How do unique lifestyles shape the metabolome, and what happens to metabolic health during and after lifestyle transitions?</p>
+            </div>
+          </div>
+          <div className="space-y-5">
+            {researchInterests.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <motion.article key={item.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.45, delay: index * 0.06 }}
+                  className="rounded-[2rem] border border-[#20231f]/10 bg-white p-7 shadow-sm sm:p-8">
+                  <div className="flex items-center justify-between">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#eef0e6] text-[#637357]"><Icon className="h-5 w-5" /></span>
+                    <span className="text-xs font-semibold tracking-[0.2em] text-[#8a6f2c]">{item.number}</span>
                   </div>
+                  <h2 className="mt-6 text-3xl font-semibold tracking-[-0.03em]">{item.title}</h2>
+                  <p className="mt-4 text-base leading-8 text-[#4c5348]">{item.text}</p>
                 </motion.article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="writing" className="px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-              <div>
-                <SectionKicker>Publications</SectionKicker>
-                <h2 className="text-4xl font-semibold leading-tight tracking-[-0.04em] sm:text-5xl">
-                </h2>
+              );
+            })}
+            <article className="grid overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-[#f7efd9] shadow-sm sm:grid-cols-[0.42fr_0.58fr]">
+              <ImageBlock src="/images/Science_cover.png" alt="Science journal cover about adaptations to water stress and pastoralism" className="min-h-[330px] rounded-none" imgClassName="object-contain p-4" />
+              <div className="p-7 sm:p-8">
+                <SectionKicker>Science cover</SectionKicker>
+                <h2 className="text-2xl font-semibold tracking-[-0.03em]">Adaptations to water stress and pastoralism</h2>
+                <p className="mt-4 text-base leading-8 text-[#4c5348]">Work on the genetic basis of dehydration resilience in the Turkana people of northern Kenya.</p>
               </div>
-              <p className="max-w-2xl text-lg leading-8 text-[#5d6658]">
-              </p>
-            </div>
-
-            <div className="divide-y divide-[#20231f]/10 overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white shadow-sm">
-              {publications.map((item) => (
-                <article key={item.title} className="p-6 transition hover:bg-[#fbfaf4] md:p-8">
-                  <div>
-                    <h3 className="text-xl font-semibold leading-snug tracking-[-0.02em] text-[#20231f]">
-                      {item.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-7 text-[#5d6658]">
-                      {formatAuthors(item.authors)}
-                    </p>
-                  </div>
-                </article>
-              ))}
-            </div>
+            </article>
           </div>
-        </section>
+        </div>
+      </section>
+    </>
+  );
+}
 
-        <section id="gallery" className="px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-              <div>
-                <SectionKicker>Gallery</SectionKicker>
-                <h2 className="max-w-3xl text-4xl font-semibold leading-tight tracking-[-0.04em] sm:text-5xl">
-                  Scenes from Turkana, the awesome people behing the work, and life....
-                </h2>
-              </div>
-              <p className="max-w-md text-base leading-8 text-[#5d6658]">
-              </p>
-            </div>
-
-            <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
-              {galleryImages.map((image, index) => (
-                <motion.figure
-                  key={image.src}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.45, delay: Math.min(index * 0.03, 0.18) }}
-                  className="mb-5 break-inside-avoid overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white p-3 shadow-sm"
-                >
-                  <ImageBlock
-                    src={image.src}
-                    alt={image.caption}
-                    className={`rounded-[1.45rem] ${
-                      index % 5 === 0
-                        ? "h-[390px]"
-                        : index % 3 === 0
-                          ? "h-[320px]"
-                          : "h-[260px]"
-                    }`}
-                  />
-                  <figcaption className="px-2 pb-2 pt-4 text-sm leading-6 text-[#5d6658]">
-                    {image.caption}
-                  </figcaption>
-                </motion.figure>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="contact" className="px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="overflow-hidden rounded-[2.4rem] border border-[#20231f]/10 bg-[#eef0e6] shadow-sm">
-              <div className="grid gap-0 lg:grid-cols-[0.85fr_1.15fr]">
-                <div className="p-8 sm:p-10 lg:p-12">
-                  <SectionKicker>Contact</SectionKicker>
-                  <h2 className="max-w-xl text-4xl font-semibold leading-tight tracking-[-0.04em] sm:text-5xl">
-                    Let’s connect
-                  </h2>
-                  <p className="mt-6 max-w-2xl text-lg leading-8 text-[#4c5348]">
-                    For collaborations, consultation, science communication
-                    or any idea you might have.
-                  </p>
-
-                  <div className="mt-10 flex flex-wrap gap-3">
-                    <LinkButton href="mailto:bm0211@princeton.edu">
-                      <Mail className="h-4 w-4" />
-                      Email
-                    </LinkButton>
-                    <LinkButton
-                      href="https://www.linkedin.com/in/benjamin-muhoya/"
-                      variant="outline"
-                      external
-                    >
-                      LinkedIn <ExternalLink className="h-4 w-4" />
-                    </LinkButton>
-                    <LinkButton
-                      href="https://orcid.org/0000-0003-2228-3649"
-                      variant="outline"
-                      external
-                    >
-                      ORCID <ExternalLink className="h-4 w-4" />
-                    </LinkButton>
-                    <LinkButton
-                      href="https://scholar.google.com/citations?user=0tp-g1cAAAAJ&hl=en&oi=ao"
-                      variant="outline"
-                      external
-                    >
-                      Google Scholar <ExternalLink className="h-4 w-4" />
-                    </LinkButton>
-                  </div>
+function ProjectsPage() {
+  return (
+    <>
+      <PageIntro kicker="Projects" title="Specific studies across populations, molecules, and models."
+        text="These projects put the broader research questions into practice, from field-based population biology to molecular phenotyping and controlled experimental models." />
+      <section className="px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
+          {currentProjects.map((project, index) => {
+            const Icon = project.icon;
+            return (
+              <motion.article key={project.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.45, delay: index * 0.06 }}
+                className="group overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white shadow-sm">
+                <ImageBlock src={project.image} alt={project.alt} className="h-72 rounded-none" imgClassName="transition duration-700 group-hover:scale-[1.025]" />
+                <div className="p-7 sm:p-8">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-[#eef0e6] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#637357]"><Icon className="h-4 w-4" />{project.eyebrow}</span>
+                  <h2 className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.03em]">{project.title}</h2>
+                  <p className="mt-4 text-base leading-8 text-[#4c5348]">{project.text}</p>
                 </div>
+              </motion.article>
+            );
+          })}
+        </div>
+      </section>
+    </>
+  );
+}
 
-                <div className="relative min-h-[360px] bg-[#dfe4d4] p-4 lg:p-6">
-                  <ImageBlock
-                    src="images/Handshake.png"
-                    alt="Panama canopy"
-                    className="h-full min-h-[360px] rounded-[2rem] border border-white/70"
-                  />
-                </div>
+function PublicationsPage() {
+  return (
+    <>
+      <PageIntro kicker="Publications" title="Research publications and collaborative work."
+        text="Selected papers and manuscripts from my work in human biology, metabolism, lifestyle transitions, and immune function." />
+      <section className="px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl divide-y divide-[#20231f]/10 overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white shadow-sm">
+          {publications.map((item, index) => (
+            <article key={item.title} className="grid gap-5 p-6 transition hover:bg-[#fbfaf4] md:grid-cols-[4rem_1fr] md:p-8">
+              <span className="text-sm font-semibold tracking-[0.2em] text-[#8a6f2c]">{String(index + 1).padStart(2, "0")}</span>
+              <div>
+                <h2 className="text-xl font-semibold leading-snug tracking-[-0.02em]">{item.title}</h2>
+                <p className="mt-3 text-sm leading-7 text-[#5d6658]">{formatAuthors(item.authors)}</p>
               </div>
-            </div>
-          </div>
-        </section>
-      </main>
+            </article>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
 
+function GalleryPage() {
+  return (
+    <>
+      <PageIntro kicker="Gallery" title="Fieldwork, collaboration, and life in science."
+        text="Scenes from Turkana, the people behind the work, and moments of learning, communication, and community." />
+      <section className="px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl columns-1 gap-5 sm:columns-2 lg:columns-3">
+          {galleryImages.map((image, index) => (
+            <motion.figure key={image.src} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.4, delay: Math.min(index * 0.025, 0.15) }}
+              className="mb-5 break-inside-avoid overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white p-3 shadow-sm">
+              <ImageBlock src={image.src} alt={image.caption}
+                className={`rounded-[1.45rem] ${index % 5 === 0 ? "h-[390px]" : index % 3 === 0 ? "h-[320px]" : "h-[260px]"}`} />
+              <figcaption className="px-2 pb-2 pt-4 text-sm leading-6 text-[#5d6658]">{image.caption}</figcaption>
+            </motion.figure>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
+
+function NotFoundPage() {
+  return (
+    <section className="px-4 pb-24 pt-40 text-center sm:px-6">
+      <SectionKicker>404</SectionKicker>
+      <h1 className="text-5xl font-semibold tracking-[-0.05em]">Page not found</h1>
+      <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-[#5d6658]">The page you requested does not exist.</p>
+      <div className="mt-8"><LinkButton href="/">Return home</LinkButton></div>
+    </section>
+  );
+}
+
+const pages = {
+  home: { component: HomePage, title: "Benjamin Muhoya | Human Biology & Metabolomics" },
+  research: { component: ResearchPage, title: "Research | Benjamin Muhoya" },
+  projects: { component: ProjectsPage, title: "Projects | Benjamin Muhoya" },
+  publications: { component: PublicationsPage, title: "Publications | Benjamin Muhoya" },
+  gallery: { component: GalleryPage, title: "Gallery | Benjamin Muhoya" },
+};
+
+export default function PersonalWebsite() {
+  const page = pageForPath(window.location.pathname);
+  const Page = pages[page]?.component || NotFoundPage;
+  useEffect(() => {
+    document.title = pages[page]?.title || "Page not found | Benjamin Muhoya";
+    window.scrollTo(0, 0);
+  }, [page]);
+  return (
+    <div className="min-h-screen bg-[#fbfaf4] text-[#20231f]">
+      <SiteHeader page={page} />
+      <main><Page />{page && <ProfileContact />}</main>
       <footer className="border-t border-[#20231f]/10 px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-3 text-sm text-[#5d6658] sm:flex-row">
           <p>© 2026 Benjamin Muhoya.</p>
-          <p>Context dependency of Metabolism</p>
+          <p>Context dependency of metabolism</p>
         </div>
       </footer>
     </div>
