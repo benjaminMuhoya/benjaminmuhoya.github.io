@@ -310,9 +310,9 @@ function HomePage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
             className="relative mt-12 min-h-[520px] overflow-hidden rounded-[2.6rem] border border-[#20231f]/10 bg-[#20231f] shadow-sm sm:min-h-[620px]">
-            <img src="/images/landscape-original-20220621.jpg" alt="Original arid northern Kenya landscape overlaid with a metabolite network and five pathway labels" className="absolute inset-0 h-full w-full object-cover opacity-80" />
+            <img src="/images/landscape-original-20220621.jpg" alt="Original arid northern Kenya landscape overlaid with a metabolite network and five pathway labels" className="absolute inset-0 h-full w-full object-cover" />
             <img src="/images/metabolite-network-overlay-v1.png" alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#1f271e]/95 via-[#293328]/62 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#1f271e]/68 via-[#293328]/20 to-transparent" />
             <div className="relative z-10 flex min-h-[520px] max-w-2xl flex-col justify-end p-7 text-white sm:min-h-[620px] sm:p-12 lg:p-16">
               <h2 className="whitespace-nowrap text-[2rem] font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">Using Metabolomics</h2>
               <p className="mt-5 max-w-xl text-base leading-8 text-white/85 sm:text-lg">to explore metabolic signatures of varying environmental exposures.</p>
@@ -335,7 +335,7 @@ function ResearchPage() {
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.82fr_1.18fr]">
           <div className="overflow-hidden rounded-[2.3rem] border border-[#20231f]/10 bg-white p-3 shadow-sm lg:sticky lg:top-28 lg:h-fit">
-            <ImageBlock src="/images/lifestyle_graphic.png" alt="Graphic contrasting pastoral and urban lifestyles" className="h-[340px] rounded-[1.7rem]" imgClassName="object-contain" />
+            <ImageBlock src="/images/lifestyle_graphic.png" alt="Graphic contrasting pastoral and urban lifestyles" className="aspect-[3/2] rounded-[1.7rem]" imgClassName="!object-contain" />
             <div className="p-5 sm:p-7">
               <SectionKicker>Overarching question</SectionKicker>
               <p className="text-2xl font-semibold leading-snug tracking-[-0.03em]">How do unique lifestyles shape the metabolome, and what happens to metabolic health during and after lifestyle transitions?</p>
@@ -374,7 +374,7 @@ function ProjectsPage() {
             return (
               <motion.article key={project.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.45, delay: index * 0.06 }}
                 className="group overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white shadow-sm">
-                <ImageBlock src={project.image} alt={project.alt} className="h-72 rounded-none" imgClassName="transition duration-700 group-hover:scale-[1.025]" />
+                <ImageBlock src={project.image} alt={project.alt} className="aspect-[4/3] rounded-none" imgClassName="!object-contain p-1.5 transition duration-700 group-hover:scale-[1.01]" />
                 <div className="p-7 sm:p-8">
                   <span className="inline-flex items-center gap-2 rounded-full bg-[#eef0e6] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#637357]"><Icon className="h-4 w-4" />{project.eyebrow}</span>
                   <h2 className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.03em]">{project.title}</h2>
