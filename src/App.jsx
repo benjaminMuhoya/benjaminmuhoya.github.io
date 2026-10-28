@@ -264,7 +264,7 @@ function HomePage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
             className="relative mt-12 min-h-[520px] overflow-hidden rounded-[2.6rem] border border-[#20231f]/10 bg-[#20231f] shadow-sm sm:min-h-[620px]">
-            <img src="/images/environment-metabolome-hero-v3.png" alt="Arid northern Kenya landscape blended with a subtle metabolic network and selected pathway labels" className="absolute inset-0 h-full w-full object-cover opacity-80" />
+            <img src="/images/environment-metabolome-hero-v4.png" alt="Arid northern Kenya landscape blended with a subtle metabolic network and selected pathway labels" className="absolute inset-0 h-full w-full object-cover opacity-80" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#1f271e]/95 via-[#293328]/62 to-transparent" />
             <div className="relative z-10 flex min-h-[520px] max-w-2xl flex-col justify-end p-7 text-white sm:min-h-[620px] sm:p-12 lg:p-16">
               <h2 className="whitespace-nowrap text-[2rem] font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">Using Metabolomics</h2>
