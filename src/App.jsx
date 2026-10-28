@@ -248,7 +248,7 @@ function HomePage() {
             <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
               <h1 className="max-w-5xl text-5xl font-semibold leading-[0.96] tracking-[-0.055em] sm:text-6xl lg:text-7xl">Studying how different environments shape human biology.</h1>
               <div>
-                <p className="text-lg leading-8 text-[#4c5348]">I am a PhD student in Ecology and Evolutionary Biology. I combine fieldwork, wet-lab methods, and computational analysis to study metabolic phenotypes and how they are shaped by environments, genetics, and their interaction.</p>
+                <p className="text-lg leading-8 text-[#4c5348]">I am a grad student in Ecology and Evolutionary Biology, combining field-based research in remote locations with high-resolution metabolomics techniques and strong computational and statistical techniques to study how metabolic phenotypes are shaped by environments, genetics, and their interaction.</p>
                 <div className="mt-7 flex flex-wrap gap-3">
                   <LinkButton href="/research/">Explore my research <ArrowRight className="h-4 w-4" /></LinkButton>
                   <LinkButton href="/Benjamin_Muhoya_CV.pdf" variant="outline" external>View CV <ArrowUpRight className="h-4 w-4" /></LinkButton>
@@ -261,8 +261,8 @@ function HomePage() {
             <img src="/images/in_the_field.jpg" alt="Field camp during research in Turkana" className="absolute inset-0 h-full w-full object-cover opacity-75" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#1f271e]/95 via-[#293328]/62 to-transparent" />
             <div className="relative z-10 flex min-h-[520px] max-w-2xl flex-col justify-end p-7 text-white sm:min-h-[620px] sm:p-12 lg:p-16">
-              <h2 className="text-5xl font-semibold tracking-[-0.05em] sm:text-7xl">Metabolomics</h2>
-              <p className="mt-5 max-w-xl text-base leading-8 text-white/85 sm:text-lg">Following the biological signatures of lifestyle and environment—from field settings to molecular phenotypes.</p>
+              <h2 className="whitespace-nowrap text-[2rem] font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">Using Metabolomics</h2>
+              <p className="mt-5 max-w-xl text-base leading-8 text-white/85 sm:text-lg">to explore metabolic signatures of varying environmental exposures.</p>
             </div>
             <div className="absolute right-5 top-5 hidden w-[38%] overflow-hidden rounded-[2rem] border border-white/40 bg-white/90 p-3 shadow-2xl sm:block lg:right-10 lg:top-10">
               <img src="/images/network_node.png" alt="Metabolic network visualization" className="aspect-[4/3] w-full rounded-[1.35rem] object-cover" />
