@@ -213,15 +213,19 @@ function PageIntro({ kicker, title, text }) {
 
 function ProfileContact() {
   return (
-    <section className="px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="profile-contact-title">
-      <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[2.4rem] border border-[#20231f]/10 bg-[#eef0e6] shadow-sm lg:grid-cols-[0.72fr_1.28fr]">
+    <aside
+      className="px-4 py-12 sm:px-6 xl:fixed xl:right-5 xl:top-24 xl:z-30 xl:max-h-[calc(100vh-7rem)] xl:w-[300px] xl:overflow-y-auto xl:px-0 xl:py-0"
+      aria-labelledby="profile-contact-title"
+    >
+      <div className="mx-auto max-w-xl rounded-[2rem] border border-[#20231f]/10 bg-[#eef0e6] p-7 text-center shadow-sm xl:p-6">
         <ImageBlock src="/images/Cover_home_page.jpg" alt="Benjamin Muhoya in the laboratory"
-          className="h-[360px] rounded-none lg:h-full lg:min-h-[470px]" imgClassName="object-[center_42%]" />
-        <div className="p-8 sm:p-10 lg:p-12">
-          <SectionKicker>Profile & contact</SectionKicker>
-          <h2 id="profile-contact-title" className="text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">Benjamin Muhoya</h2>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-[#4c5348]">PhD student in Ecology and Evolutionary Biology studying metabolic phenotypes and their environmental and genetic context.</p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          className="mx-auto h-32 w-32 rounded-full border-4 border-white shadow-sm"
+          imgClassName="object-[center_38%]" />
+        <div className="mt-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#8a6f2c]">Profile & contact</p>
+          <h2 id="profile-contact-title" className="mt-3 text-2xl font-semibold tracking-[-0.03em]">Benjamin Muhoya</h2>
+          <p className="mt-3 text-sm leading-6 text-[#4c5348]">PhD student in Ecology and Evolutionary Biology studying metabolic phenotypes in environmental and genetic context.</p>
+          <div className="mt-6 flex flex-wrap justify-center gap-2 xl:[&>a]:w-full">
             <LinkButton href="mailto:bm0211@princeton.edu"><Mail className="h-4 w-4" />Email</LinkButton>
             <LinkButton href="https://scholar.google.com/citations?user=0tp-g1cAAAAJ&hl=en&oi=ao" variant="outline" external>Google Scholar <ExternalLink className="h-4 w-4" /></LinkButton>
             <LinkButton href="https://orcid.org/0000-0003-2228-3649" variant="outline" external>ORCID <ExternalLink className="h-4 w-4" /></LinkButton>
@@ -230,7 +234,7 @@ function ProfileContact() {
           </div>
         </div>
       </div>
-    </section>
+    </aside>
   );
 }
 
@@ -429,8 +433,8 @@ export default function PersonalWebsite() {
   return (
     <div className="min-h-screen bg-[#fbfaf4] text-[#20231f]">
       <SiteHeader page={page} />
-      <main><Page />{page && <ProfileContact />}</main>
-      <footer className="border-t border-[#20231f]/10 px-4 py-8 sm:px-6 lg:px-8">
+      <main className={page ? "xl:pr-[330px]" : ""}><Page />{page && <ProfileContact />}</main>
+      <footer className={`border-t border-[#20231f]/10 px-4 py-8 sm:px-6 lg:px-8 ${page ? "xl:pr-[350px]" : ""}`}>
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-3 text-sm text-[#5d6658] sm:flex-row">
           <p>© 2026 Benjamin Muhoya.</p>
           <p>Context dependency of metabolism</p>
