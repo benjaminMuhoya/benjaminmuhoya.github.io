@@ -247,7 +247,7 @@ function HomePage() {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <SectionKicker>Human biology in context</SectionKicker>
             <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-              <h1 className="max-w-5xl text-5xl font-semibold leading-[0.96] tracking-[-0.055em] sm:text-6xl lg:text-7xl">Studying how different environments shape human biology.</h1>
+              <h1 className="max-w-5xl text-5xl font-semibold leading-[0.96] tracking-[-0.055em] sm:text-6xl lg:text-7xl">A little about me</h1>
               <div>
                 <p className="text-lg leading-8 text-[#4c5348]">I am a PhD student in Ecology and Evolutionary Biology. I combine fieldwork, wet-lab methods, and computational analysis to study metabolic phenotypes and how they are shaped by environments, genetics, and their interaction.</p>
                 <div className="mt-7 flex flex-wrap gap-3">
@@ -270,20 +270,6 @@ function HomePage() {
               <img src="/images/network_node.png" alt="Metabolic network visualization" className="aspect-[4/3] w-full rounded-[1.35rem] object-cover" />
             </div>
           </motion.div>
-        </div>
-      </section>
-      <section className="px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-5 md:grid-cols-3">
-          {researchInterests.map((item) => {
-            const Icon = item.icon;
-            return (
-              <article key={item.title} className="rounded-[2rem] border border-[#20231f]/10 bg-white p-7 shadow-sm">
-                <Icon className="h-5 w-5 text-[#637357]" />
-                <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em]">{item.title}</h2>
-                <p className="mt-3 text-sm leading-7 text-[#5d6658]">{item.text}</p>
-              </article>
-            );
-          })}
         </div>
       </section>
     </>
@@ -319,14 +305,6 @@ function ResearchPage() {
                 </motion.article>
               );
             })}
-            <article className="grid overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-[#f7efd9] shadow-sm sm:grid-cols-[0.42fr_0.58fr]">
-              <ImageBlock src="/images/Science_cover.png" alt="Science journal cover about adaptations to water stress and pastoralism" className="min-h-[330px] rounded-none" imgClassName="object-contain p-4" />
-              <div className="p-7 sm:p-8">
-                <SectionKicker>Science cover</SectionKicker>
-                <h2 className="text-2xl font-semibold tracking-[-0.03em]">Adaptations to water stress and pastoralism</h2>
-                <p className="mt-4 text-base leading-8 text-[#4c5348]">Work on the genetic basis of dehydration resilience in the Turkana people of northern Kenya.</p>
-              </div>
-            </article>
           </div>
         </div>
       </section>
@@ -367,6 +345,14 @@ function PublicationsPage() {
       <PageIntro kicker="Publications" title="Research publications and collaborative work."
         text="Selected papers and manuscripts from my work in human biology, metabolism, lifestyle transitions, and immune function." />
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
+        <article className="mx-auto mb-6 grid max-w-7xl overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-[#f7efd9] shadow-sm sm:grid-cols-[0.42fr_0.58fr]">
+          <ImageBlock src="/images/Science_cover.png" alt="Science journal cover about adaptations to water stress and pastoralism" className="min-h-[330px] rounded-none" imgClassName="object-contain p-4" />
+          <div className="p-7 sm:p-8">
+            <SectionKicker>Science cover</SectionKicker>
+            <h2 className="text-2xl font-semibold tracking-[-0.03em]">Adaptations to water stress and pastoralism</h2>
+            <p className="mt-4 text-base leading-8 text-[#4c5348]">Work on the genetic basis of dehydration resilience in the Turkana people of northern Kenya.</p>
+          </div>
+        </article>
         <div className="mx-auto max-w-7xl divide-y divide-[#20231f]/10 overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white shadow-sm">
           {publications.map((item, index) => (
             <article key={item.title} className="grid gap-5 p-6 transition hover:bg-[#fbfaf4] md:grid-cols-[4rem_1fr] md:p-8">
