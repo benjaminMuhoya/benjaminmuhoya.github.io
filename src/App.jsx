@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
   ArrowUpRight,
+  ChevronDown,
   Dna,
   ExternalLink,
   FlaskConical,
@@ -218,26 +219,71 @@ function PageIntro({ kicker, title, text }) {
 }
 
 function ProfileContact() {
+  const [contactsOpen, setContactsOpen] = useState(false);
+  const mobilePanelRef = useRef(null);
+
+  useEffect(() => {
+    if (!contactsOpen) return undefined;
+
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setContactsOpen(false);
+    };
+    const closeOnOutsideClick = (event) => {
+      if (!mobilePanelRef.current?.contains(event.target)) setContactsOpen(false);
+    };
+
+    document.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    return () => {
+      document.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
+    };
+  }, [contactsOpen]);
+
+  const contactLinks = (mobile = false) => (
+    <div className={`flex gap-2 ${mobile ? "flex-col [&>a]:w-full" : "mt-6 flex-wrap justify-center xl:[&>a]:w-full"}`}>
+      <LinkButton href="mailto:bm0211@princeton.edu"><Mail className="h-4 w-4" />Email</LinkButton>
+      <LinkButton href="https://scholar.google.com/citations?user=0tp-g1cAAAAJ&hl=en&oi=ao" variant="outline" external>Google Scholar <ExternalLink className="h-4 w-4" /></LinkButton>
+      <LinkButton href="https://orcid.org/0000-0003-2228-3649" variant="outline" external>ORCID <ExternalLink className="h-4 w-4" /></LinkButton>
+      <LinkButton href="https://www.linkedin.com/in/benjamin-muhoya/" variant="outline" external>LinkedIn <ExternalLink className="h-4 w-4" /></LinkButton>
+      <LinkButton href="/Benjamin_Muhoya_CV.pdf" variant="outline" external>View CV <ArrowUpRight className="h-4 w-4" /></LinkButton>
+    </div>
+  );
+
   return (
     <aside
-      className="px-4 py-12 sm:px-6 xl:fixed xl:right-5 xl:top-24 xl:z-30 xl:max-h-[calc(100vh-7rem)] xl:w-[300px] xl:overflow-y-auto xl:px-0 xl:py-0"
-      aria-labelledby="profile-contact-title"
+      className="sticky top-[73px] z-40 px-4 py-3 sm:px-6 xl:fixed xl:right-5 xl:top-24 xl:z-30 xl:max-h-[calc(100vh-7rem)] xl:w-[300px] xl:overflow-y-auto xl:px-0 xl:py-0"
+      aria-label="Profile and contact information"
     >
-      <div className="mx-auto max-w-xl rounded-[2rem] border border-[#20231f]/10 bg-[#eef0e6] p-7 text-center shadow-sm xl:p-6">
+      <div ref={mobilePanelRef} className="relative mx-auto max-w-7xl xl:hidden">
+        <div className="flex items-center gap-2 rounded-[1.4rem] border border-[#20231f]/10 bg-[#eef0e6]/95 p-2.5 shadow-sm backdrop-blur-xl">
+          <ImageBlock src="/images/Cover_home_page.jpg" alt="Benjamin Muhoya in the laboratory"
+            className="h-12 w-12 shrink-0 rounded-full border-2 border-white shadow-sm"
+            imgClassName="object-[center_38%]" />
+          <p className="min-w-0 flex-1 text-sm font-semibold leading-tight tracking-[-0.02em] sm:text-base">Benjamin Muhoya</p>
+          <button type="button" onClick={() => setContactsOpen((open) => !open)}
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-[#637357] px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#4f6046] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#637357]"
+            aria-expanded={contactsOpen} aria-controls="mobile-contact-menu">
+            Contacts
+            <ChevronDown className={`h-4 w-4 transition-transform ${contactsOpen ? "rotate-180" : ""}`} />
+          </button>
+        </div>
+        {contactsOpen && (
+          <div id="mobile-contact-menu" className="absolute right-0 top-[calc(100%+0.5rem)] w-full max-w-sm rounded-[1.5rem] border border-[#20231f]/10 bg-[#fbfaf4] p-3 shadow-xl">
+            {contactLinks(true)}
+          </div>
+        )}
+      </div>
+
+      <div className="hidden rounded-[2rem] border border-[#20231f]/10 bg-[#eef0e6] p-6 text-center shadow-sm xl:block">
         <ImageBlock src="/images/Cover_home_page.jpg" alt="Benjamin Muhoya in the laboratory"
           className="mx-auto h-32 w-32 rounded-full border-4 border-white shadow-sm"
           imgClassName="object-[center_38%]" />
         <div className="mt-5">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#8a6f2c]">Profile & contact</p>
-          <h2 id="profile-contact-title" className="mt-3 text-2xl font-semibold tracking-[-0.03em]">Benjamin Muhoya</h2>
+          <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em]">Benjamin Muhoya</h2>
           <p className="mt-3 text-sm leading-6 text-[#4c5348]">PhD student in Ecology and Evolutionary Biology studying metabolic phenotypes in environmental and genetic context.</p>
-          <div className="mt-6 flex flex-wrap justify-center gap-2 xl:[&>a]:w-full">
-            <LinkButton href="mailto:bm0211@princeton.edu"><Mail className="h-4 w-4" />Email</LinkButton>
-            <LinkButton href="https://scholar.google.com/citations?user=0tp-g1cAAAAJ&hl=en&oi=ao" variant="outline" external>Google Scholar <ExternalLink className="h-4 w-4" /></LinkButton>
-            <LinkButton href="https://orcid.org/0000-0003-2228-3649" variant="outline" external>ORCID <ExternalLink className="h-4 w-4" /></LinkButton>
-            <LinkButton href="https://www.linkedin.com/in/benjamin-muhoya/" variant="outline" external>LinkedIn <ExternalLink className="h-4 w-4" /></LinkButton>
-            <LinkButton href="/Benjamin_Muhoya_CV.pdf" variant="outline" external>View CV <ArrowUpRight className="h-4 w-4" /></LinkButton>
-          </div>
+          {contactLinks()}
         </div>
       </div>
     </aside>
@@ -264,13 +310,17 @@ function HomePage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
             className="relative mt-12 min-h-[520px] overflow-hidden rounded-[2.6rem] border border-[#20231f]/10 bg-[#20231f] shadow-sm sm:min-h-[620px]">
-            <img src="/images/environment-metabolome-hero-v4.png" alt="Arid northern Kenya landscape blended with a subtle metabolic network and selected pathway labels" className="absolute inset-0 h-full w-full object-cover opacity-80" />
+            <img src="/images/landscape-original-20220621.jpg" alt="Original arid northern Kenya landscape overlaid with a metabolite network and five pathway labels" className="absolute inset-0 h-full w-full object-cover opacity-80" />
+            <img src="/images/metabolite-network-overlay-v1.png" alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#1f271e]/95 via-[#293328]/62 to-transparent" />
             <div className="relative z-10 flex min-h-[520px] max-w-2xl flex-col justify-end p-7 text-white sm:min-h-[620px] sm:p-12 lg:p-16">
               <h2 className="whitespace-nowrap text-[2rem] font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">Using Metabolomics</h2>
               <p className="mt-5 max-w-xl text-base leading-8 text-white/85 sm:text-lg">to explore metabolic signatures of varying environmental exposures.</p>
             </div>
           </motion.div>
+          <p className="mt-3 pr-2 text-right text-xs leading-5 text-[#5d6658] sm:pr-4 sm:text-sm">
+            Photo: <span className="font-semibold text-[#20231f]">Benjamin Muhoya</span> · <span className="font-semibold text-[#20231f]">Lobopakeyu</span> range of hills located in <span className="font-semibold text-[#20231f]">Turkana County, Kenya</span>.
+          </p>
         </div>
       </section>
     </>
@@ -425,7 +475,7 @@ export default function PersonalWebsite() {
   return (
     <div className="min-h-screen bg-[#fbfaf4] text-[#20231f]">
       <SiteHeader page={page} />
-      <main className={page ? "xl:pr-[330px]" : ""}><Page />{page && <ProfileContact />}</main>
+      <main className={page ? "xl:pr-[330px]" : ""}>{page && <ProfileContact />}<Page /></main>
       <footer className={`border-t border-[#20231f]/10 px-4 py-8 sm:px-6 lg:px-8 ${page ? "xl:pr-[350px]" : ""}`}>
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-3 text-sm text-[#5d6658] sm:flex-row">
           <p>© 2026 Benjamin Muhoya.</p>
