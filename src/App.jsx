@@ -201,11 +201,17 @@ function PageIntro({ kicker, title, text }) {
   return (
     <section className="px-4 pb-12 pt-32 sm:px-6 sm:pb-16 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <SectionKicker>{kicker}</SectionKicker>
-        <div className="grid gap-7 lg:grid-cols-[1.12fr_0.88fr] lg:items-end">
+        {kicker && <SectionKicker>{kicker}</SectionKicker>}
+        {title && text ? (
+          <div className="grid gap-7 lg:grid-cols-[1.12fr_0.88fr] lg:items-end">
+            <h1 className="max-w-4xl text-5xl font-semibold leading-[0.98] tracking-[-0.05em] sm:text-6xl">{title}</h1>
+            <p className="max-w-2xl text-lg leading-8 text-[#5d6658]">{text}</p>
+          </div>
+        ) : title ? (
           <h1 className="max-w-4xl text-5xl font-semibold leading-[0.98] tracking-[-0.05em] sm:text-6xl">{title}</h1>
+        ) : (
           <p className="max-w-2xl text-lg leading-8 text-[#5d6658]">{text}</p>
-        </div>
+        )}
       </div>
     </section>
   );
@@ -258,14 +264,11 @@ function HomePage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
             className="relative mt-12 min-h-[520px] overflow-hidden rounded-[2.6rem] border border-[#20231f]/10 bg-[#20231f] shadow-sm sm:min-h-[620px]">
-            <img src="/images/landscape_background.jpg" alt="Arid landscape in northern Kenya" className="absolute inset-0 h-full w-full object-cover opacity-75" />
+            <img src="/images/environment-metabolome-hero-v3.png" alt="Arid northern Kenya landscape blended with a subtle metabolic network and selected pathway labels" className="absolute inset-0 h-full w-full object-cover opacity-80" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#1f271e]/95 via-[#293328]/62 to-transparent" />
             <div className="relative z-10 flex min-h-[520px] max-w-2xl flex-col justify-end p-7 text-white sm:min-h-[620px] sm:p-12 lg:p-16">
               <h2 className="whitespace-nowrap text-[2rem] font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">Using Metabolomics</h2>
               <p className="mt-5 max-w-xl text-base leading-8 text-white/85 sm:text-lg">to explore metabolic signatures of varying environmental exposures.</p>
-            </div>
-            <div className="absolute right-5 top-5 hidden w-[38%] overflow-hidden rounded-[2rem] border border-white/40 bg-white/90 p-3 shadow-2xl sm:block lg:right-10 lg:top-10">
-              <img src="/images/network_node.png" alt="Metabolic network visualization" className="aspect-[4/3] w-full rounded-[1.35rem] object-cover" />
             </div>
           </motion.div>
         </div>
@@ -277,7 +280,7 @@ function HomePage() {
 function ResearchPage() {
   return (
     <>
-      <PageIntro kicker="Research" title="Gene × environment interactions, read through metabolism."
+      <PageIntro title="Gene × environment interactions, read through metabolism."
         text="My research connects lifestyle variation, metabolomics, genomics, and computational analysis to understand how human metabolic phenotypes vary across contexts." />
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.82fr_1.18fr]">
@@ -313,8 +316,7 @@ function ResearchPage() {
 function ProjectsPage() {
   return (
     <>
-      <PageIntro kicker="Projects" title="Specific studies across populations, molecules, and models."
-        text="These projects put the broader research questions into practice, from field-based population biology to molecular phenotyping and controlled experimental models." />
+      <PageIntro title="Projects I am actively working on" />
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
           {currentProjects.map((project, index) => {
@@ -340,8 +342,7 @@ function ProjectsPage() {
 function PublicationsPage() {
   return (
     <>
-      <PageIntro kicker="Publications" title="Research publications and collaborative work."
-        text="Selected papers and manuscripts from my work in human biology, metabolism, lifestyle transitions, and immune function." />
+      <PageIntro title="Manuscripts and Published Works" />
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
         <article className="mx-auto mb-6 grid max-w-7xl overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-[#f7efd9] shadow-sm sm:grid-cols-[0.48fr_0.52fr]">
           <ImageBlock src="/images/Sciencelargecover.jpg" alt="Science cover featuring young Turkana herders guiding camels at sunset" className="min-h-[520px] rounded-none" imgClassName="object-contain p-4" />
@@ -377,8 +378,8 @@ function PublicationsPage() {
 function GalleryPage() {
   return (
     <>
-      <PageIntro kicker="Gallery" title="Fieldwork, collaboration, and life in science."
-        text="Scenes from Turkana, the people behind the work, and moments of learning, communication, and community." />
+      <PageIntro kicker="Gallery"
+        text="Scenes from the field, the team behind the work, adorable moments and so on ..." />
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl columns-1 gap-5 sm:columns-2 lg:columns-3">
           {galleryImages.map((image, index) => (
