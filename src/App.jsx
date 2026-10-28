@@ -321,7 +321,7 @@ function HomePage() {
             </div>
           </motion.div>
           <p className="mt-3 pr-2 text-right text-xs font-normal leading-5 text-[#20231f] sm:pr-4 sm:text-sm">
-            Photo: Benjamin Muhoya · Lobopakeyu range of hills located in Turkana County, Kenya.
+            Lobopakeyu range of hills located in Turkana County, Kenya. Photo by Benjamin Muhoya.
           </p>
         </div>
       </section>
@@ -430,6 +430,7 @@ function PublicationsPage() {
 function GalleryPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [transitionDuration, setTransitionDuration] = useState(5.2);
   const [hovered, setHovered] = useState(false);
   const [focusWithin, setFocusWithin] = useState(false);
   const [manualPause, setManualPause] = useState(false);
@@ -438,16 +439,26 @@ function GalleryPage() {
 
   useEffect(() => {
     if (shouldReduceMotion || hovered || focusWithin || manualPause) return undefined;
-    const interval = window.setInterval(() => {
+    let interval;
+    const advance = () => {
+      setTransitionDuration(5.2);
       setDirection(1);
       setActiveIndex((index) => (index + 1) % galleryImages.length);
-    }, 5500);
-    return () => window.clearInterval(interval);
+    };
+    const start = window.setTimeout(() => {
+      advance();
+      interval = window.setInterval(advance, 5200);
+    }, 120);
+    return () => {
+      window.clearTimeout(start);
+      window.clearInterval(interval);
+    };
   }, [focusWithin, hovered, manualPause, shouldReduceMotion]);
 
   useEffect(() => () => window.clearTimeout(manualPauseTimeoutRef.current), []);
 
   const moveCarousel = (step) => {
+    setTransitionDuration(shouldReduceMotion ? 0 : 0.65);
     setDirection(step);
     setActiveIndex((index) => (index + step + galleryImages.length) % galleryImages.length);
     setManualPause(true);
@@ -456,43 +467,70 @@ function GalleryPage() {
   };
 
   const activeImage = galleryImages[activeIndex];
+  const visibleSlides = [-1, 0, 1].map((offset) => ({
+    ...galleryImages[(activeIndex + offset + galleryImages.length) % galleryImages.length],
+    offset,
+  }));
+  const slideVariants = {
+    enter: ({ offset, travelDirection }) => ({
+      x: `${(offset + travelDirection) * 34}%`,
+      opacity: 0,
+      scale: 0.8,
+    }),
+    visible: ({ offset }) => ({
+      x: `${offset * 34}%`,
+      opacity: offset === 0 ? 1 : 0.36,
+      scale: offset === 0 ? 1 : 0.86,
+    }),
+    exit: {
+      opacity: 0,
+      scale: 0.78,
+    },
+  };
 
   return (
     <>
       <PageIntro kicker="Gallery"
         text="Scenes from the field, the team behind the work, adorable moments and so on ..." />
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl" role="region" aria-roledescription="carousel" aria-label="Fieldwork and research gallery"
+        <div className="mx-auto max-w-6xl" role="region" aria-roledescription="carousel" aria-label="Fieldwork and research gallery"
           onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
           onFocusCapture={() => setFocusWithin(true)}
           onBlurCapture={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget)) setFocusWithin(false);
           }}>
           <div className="overflow-hidden rounded-[2.4rem] border border-[#20231f]/10 bg-white p-3 shadow-sm sm:p-4">
-            <AnimatePresence initial={false} mode="wait" custom={direction}>
-              <motion.figure key={activeImage.src} custom={direction}
-                initial={{ opacity: 0, x: shouldReduceMotion ? 0 : direction * 42 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: shouldReduceMotion ? 0 : direction * -42 }}
-                transition={{ duration: shouldReduceMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}>
-                <motion.div className="aspect-[4/3] cursor-grab overflow-hidden rounded-[1.8rem] bg-[#e9eadf] active:cursor-grabbing sm:aspect-[16/10] lg:aspect-[16/9]"
-                  drag={shouldReduceMotion ? false : "x"} dragConstraints={{ left: 0, right: 0 }} dragElastic={0.16}
-                  onDragEnd={(_, info) => {
-                    if (info.offset.x < -55) moveCarousel(1);
-                    if (info.offset.x > 55) moveCarousel(-1);
-                  }}>
-                  <img src={activeImage.src} alt={activeImage.caption} className="h-full w-full object-cover" />
-                </motion.div>
-                <motion.figcaption className="flex min-h-20 items-center justify-between gap-5 px-3 py-5 sm:px-5"
-                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: shouldReduceMotion ? 0 : 0.38, delay: shouldReduceMotion ? 0 : 0.16 }}
-                  aria-live="polite" aria-atomic="true">
-                  <span className="text-base leading-7 text-[#4c5348] sm:text-lg">{activeImage.caption}</span>
-                  <span className="shrink-0 text-xs font-semibold tracking-[0.16em] text-[#8a6f2c]">
-                    {String(activeIndex + 1).padStart(2, "0")} / {String(galleryImages.length).padStart(2, "0")}
-                  </span>
-                </motion.figcaption>
-              </motion.figure>
+            <motion.div className="relative mx-auto h-[260px] max-w-5xl cursor-grab overflow-hidden rounded-[1.8rem] bg-[#eef0e6] active:cursor-grabbing sm:h-[320px] lg:h-[360px]"
+              drag={shouldReduceMotion ? false : "x"} dragConstraints={{ left: 0, right: 0 }} dragElastic={0.1}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -55) moveCarousel(1);
+                if (info.offset.x > 55) moveCarousel(-1);
+              }}>
+              <AnimatePresence initial={false}>
+                {visibleSlides.map((image) => (
+                  <motion.div key={image.src} className="pointer-events-none absolute inset-0 flex items-center justify-center"
+                    custom={{ offset: image.offset, travelDirection: direction }} variants={slideVariants}
+                    initial="enter" animate="visible" exit="exit"
+                    transition={{ duration: shouldReduceMotion ? 0 : transitionDuration, ease: transitionDuration > 1 ? "linear" : [0.22, 1, 0.36, 1] }}
+                    style={{ zIndex: image.offset === 0 ? 2 : 1 }}>
+                    <figure className="h-[82%] w-[68%] overflow-hidden rounded-[1.4rem] bg-[#e9eadf] shadow-sm sm:w-[50%] lg:w-[44%]">
+                      <img src={image.src} alt={image.offset === 0 ? image.caption : ""} aria-hidden={image.offset !== 0}
+                        className="h-full w-full object-cover" />
+                    </figure>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+            <AnimatePresence initial={false} mode="wait">
+              <motion.div key={activeImage.src} className="flex min-h-20 items-center justify-between gap-5 px-3 py-5 sm:px-5"
+                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.38, delay: shouldReduceMotion ? 0 : 0.18 }}
+                aria-live="polite" aria-atomic="true">
+                <span className="text-base leading-7 text-[#4c5348] sm:text-lg">{activeImage.caption}</span>
+                <span className="shrink-0 text-xs font-semibold tracking-[0.16em] text-[#8a6f2c]">
+                  {String(activeIndex + 1).padStart(2, "0")} / {String(galleryImages.length).padStart(2, "0")}
+                </span>
+              </motion.div>
             </AnimatePresence>
           </div>
           <div className="mt-5 flex justify-end gap-3">
