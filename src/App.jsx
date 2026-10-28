@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   ArrowUpRight,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Dna,
   ExternalLink,
   FlaskConical,
@@ -318,8 +320,8 @@ function HomePage() {
               <p className="mt-5 max-w-xl text-base leading-8 text-white/85 sm:text-lg">to explore metabolic signatures of varying environmental exposures.</p>
             </div>
           </motion.div>
-          <p className="mt-3 pr-2 text-right text-xs leading-5 text-[#5d6658] sm:pr-4 sm:text-sm">
-            Photo: <span className="font-semibold text-[#20231f]">Benjamin Muhoya</span> · <span className="font-semibold text-[#20231f]">Lobopakeyu</span> range of hills located in <span className="font-semibold text-[#20231f]">Turkana County, Kenya</span>.
+          <p className="mt-3 pr-2 text-right text-xs font-normal leading-5 text-[#20231f] sm:pr-4 sm:text-sm">
+            Photo: Benjamin Muhoya · Lobopakeyu range of hills located in Turkana County, Kenya.
           </p>
         </div>
       </section>
@@ -374,7 +376,7 @@ function ProjectsPage() {
             return (
               <motion.article key={project.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.45, delay: index * 0.06 }}
                 className="group overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white shadow-sm">
-                <ImageBlock src={project.image} alt={project.alt} className="aspect-[4/3] rounded-none" imgClassName="!object-contain p-1.5 transition duration-700 group-hover:scale-[1.01]" />
+                <ImageBlock src={project.image} alt={project.alt} className="aspect-[4/3] rounded-none" imgClassName="!object-cover transition duration-700 group-hover:scale-[1.015]" />
                 <div className="p-7 sm:p-8">
                   <span className="inline-flex items-center gap-2 rounded-full bg-[#eef0e6] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#637357]"><Icon className="h-4 w-4" />{project.eyebrow}</span>
                   <h2 className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.03em]">{project.title}</h2>
@@ -395,7 +397,7 @@ function PublicationsPage() {
       <PageIntro title="Manuscripts and Published Works" />
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
         <article className="mx-auto mb-6 grid max-w-7xl overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-[#f7efd9] shadow-sm sm:grid-cols-[0.48fr_0.52fr]">
-          <ImageBlock src="/images/Sciencelargecover.jpg" alt="Science cover featuring young Turkana herders guiding camels at sunset" className="min-h-[520px] rounded-none" imgClassName="object-contain p-4" />
+          <ImageBlock src="/images/Sciencelargecover.jpg" alt="Science cover featuring young Turkana herders guiding camels at sunset" className="min-h-[520px] rounded-none" imgClassName="!object-cover object-top" />
           <div className="flex flex-col justify-center p-7 sm:p-9">
             <SectionKicker>Science cover</SectionKicker>
             <h2 className="text-3xl font-semibold tracking-[-0.03em]">Adaptations to water stress and pastoralism</h2>
@@ -426,20 +428,83 @@ function PublicationsPage() {
 }
 
 function GalleryPage() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [hovered, setHovered] = useState(false);
+  const [focusWithin, setFocusWithin] = useState(false);
+  const [manualPause, setManualPause] = useState(false);
+  const manualPauseTimeoutRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (shouldReduceMotion || hovered || focusWithin || manualPause) return undefined;
+    const interval = window.setInterval(() => {
+      setDirection(1);
+      setActiveIndex((index) => (index + 1) % galleryImages.length);
+    }, 5500);
+    return () => window.clearInterval(interval);
+  }, [focusWithin, hovered, manualPause, shouldReduceMotion]);
+
+  useEffect(() => () => window.clearTimeout(manualPauseTimeoutRef.current), []);
+
+  const moveCarousel = (step) => {
+    setDirection(step);
+    setActiveIndex((index) => (index + step + galleryImages.length) % galleryImages.length);
+    setManualPause(true);
+    window.clearTimeout(manualPauseTimeoutRef.current);
+    manualPauseTimeoutRef.current = window.setTimeout(() => setManualPause(false), 8000);
+  };
+
+  const activeImage = galleryImages[activeIndex];
+
   return (
     <>
       <PageIntro kicker="Gallery"
         text="Scenes from the field, the team behind the work, adorable moments and so on ..." />
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl columns-1 gap-5 sm:columns-2 lg:columns-3">
-          {galleryImages.map((image, index) => (
-            <motion.figure key={image.src} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-50px" }} transition={{ duration: 0.4, delay: Math.min(index * 0.025, 0.15) }}
-              className="mb-5 break-inside-avoid overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white p-3 shadow-sm">
-              <ImageBlock src={image.src} alt={image.caption}
-                className={`rounded-[1.45rem] ${index % 5 === 0 ? "h-[390px]" : index % 3 === 0 ? "h-[320px]" : "h-[260px]"}`} />
-              <figcaption className="px-2 pb-2 pt-4 text-sm leading-6 text-[#5d6658]">{image.caption}</figcaption>
-            </motion.figure>
-          ))}
+        <div className="mx-auto max-w-7xl" role="region" aria-roledescription="carousel" aria-label="Fieldwork and research gallery"
+          onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
+          onFocusCapture={() => setFocusWithin(true)}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) setFocusWithin(false);
+          }}>
+          <div className="overflow-hidden rounded-[2.4rem] border border-[#20231f]/10 bg-white p-3 shadow-sm sm:p-4">
+            <AnimatePresence initial={false} mode="wait" custom={direction}>
+              <motion.figure key={activeImage.src} custom={direction}
+                initial={{ opacity: 0, x: shouldReduceMotion ? 0 : direction * 42 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: shouldReduceMotion ? 0 : direction * -42 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}>
+                <motion.div className="aspect-[4/3] cursor-grab overflow-hidden rounded-[1.8rem] bg-[#e9eadf] active:cursor-grabbing sm:aspect-[16/10] lg:aspect-[16/9]"
+                  drag={shouldReduceMotion ? false : "x"} dragConstraints={{ left: 0, right: 0 }} dragElastic={0.16}
+                  onDragEnd={(_, info) => {
+                    if (info.offset.x < -55) moveCarousel(1);
+                    if (info.offset.x > 55) moveCarousel(-1);
+                  }}>
+                  <img src={activeImage.src} alt={activeImage.caption} className="h-full w-full object-cover" />
+                </motion.div>
+                <motion.figcaption className="flex min-h-20 items-center justify-between gap-5 px-3 py-5 sm:px-5"
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: shouldReduceMotion ? 0 : 0.38, delay: shouldReduceMotion ? 0 : 0.16 }}
+                  aria-live="polite" aria-atomic="true">
+                  <span className="text-base leading-7 text-[#4c5348] sm:text-lg">{activeImage.caption}</span>
+                  <span className="shrink-0 text-xs font-semibold tracking-[0.16em] text-[#8a6f2c]">
+                    {String(activeIndex + 1).padStart(2, "0")} / {String(galleryImages.length).padStart(2, "0")}
+                  </span>
+                </motion.figcaption>
+              </motion.figure>
+            </AnimatePresence>
+          </div>
+          <div className="mt-5 flex justify-end gap-3">
+            <button type="button" onClick={() => moveCarousel(-1)} aria-label="Show previous gallery image"
+              className="inline-flex h-12 items-center gap-2 rounded-full border border-[#9aaa88]/50 bg-white px-5 text-sm font-semibold text-[#263028] transition hover:border-[#8a6f2c] hover:bg-[#f8f2df] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#637357]">
+              <ChevronLeft className="h-5 w-5" /> Previous
+            </button>
+            <button type="button" onClick={() => moveCarousel(1)} aria-label="Show next gallery image"
+              className="inline-flex h-12 items-center gap-2 rounded-full bg-[#637357] px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#4f6046] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#637357]">
+              Next <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </section>
     </>
