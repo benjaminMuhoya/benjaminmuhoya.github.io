@@ -300,7 +300,7 @@ function HomePage() {
             <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
               <h1 className="max-w-5xl text-5xl font-semibold leading-[0.96] tracking-[-0.055em] sm:text-6xl lg:text-7xl">Studying how different environments shape human biology.</h1>
               <div>
-                <p className="text-lg leading-8 text-[#4c5348]">I am a grad student in Ecology and Evolutionary Biology, combining field-based research in remote locations with high-resolution metabolomics techniques and strong computational and statistical techniques to study how metabolic phenotypes are shaped by environments, genetics, and their interaction.</p>
+                <p className="text-lg leading-8 text-[#4c5348]">I am a grad student in Ecology and Evolutionary Biology, combining field-based research in remote locations & treatment-control experiments in the lab with high-resolution metabolomics techniques, genomics, and strong computational and statistical techniques to study how metabolic phenotypes are shaped by environments, genetics, and their interaction.</p>
                 <div className="mt-7 flex flex-wrap gap-3">
                   <LinkButton href="/research/">Explore my research <ArrowRight className="h-4 w-4" /></LinkButton>
                   <LinkButton href="/Benjamin_Muhoya_CV.pdf" variant="outline" external>View CV <ArrowUpRight className="h-4 w-4" /></LinkButton>
