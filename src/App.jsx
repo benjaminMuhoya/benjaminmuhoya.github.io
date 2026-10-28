@@ -258,7 +258,7 @@ function HomePage() {
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
             className="relative mt-12 min-h-[520px] overflow-hidden rounded-[2.6rem] border border-[#20231f]/10 bg-[#20231f] shadow-sm sm:min-h-[620px]">
-            <img src="/images/in_the_field.jpg" alt="Field camp during research in Turkana" className="absolute inset-0 h-full w-full object-cover opacity-75" />
+            <img src="/images/landscape_background.jpg" alt="Arid landscape in northern Kenya" className="absolute inset-0 h-full w-full object-cover opacity-75" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#1f271e]/95 via-[#293328]/62 to-transparent" />
             <div className="relative z-10 flex min-h-[520px] max-w-2xl flex-col justify-end p-7 text-white sm:min-h-[620px] sm:p-12 lg:p-16">
               <h2 className="whitespace-nowrap text-[2rem] font-semibold tracking-[-0.05em] sm:text-5xl lg:text-6xl">Using Metabolomics</h2>
@@ -343,12 +343,19 @@ function PublicationsPage() {
       <PageIntro kicker="Publications" title="Research publications and collaborative work."
         text="Selected papers and manuscripts from my work in human biology, metabolism, lifestyle transitions, and immune function." />
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
-        <article className="mx-auto mb-6 grid max-w-7xl overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-[#f7efd9] shadow-sm sm:grid-cols-[0.42fr_0.58fr]">
-          <ImageBlock src="/images/Science_cover.png" alt="Science journal cover about adaptations to water stress and pastoralism" className="min-h-[330px] rounded-none" imgClassName="object-contain p-4" />
-          <div className="p-7 sm:p-8">
+        <article className="mx-auto mb-6 grid max-w-7xl overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-[#f7efd9] shadow-sm sm:grid-cols-[0.48fr_0.52fr]">
+          <ImageBlock src="/images/Sciencelargecover.jpg" alt="Science cover featuring young Turkana herders guiding camels at sunset" className="min-h-[520px] rounded-none" imgClassName="object-contain p-4" />
+          <div className="flex flex-col justify-center p-7 sm:p-9">
             <SectionKicker>Science cover</SectionKicker>
-            <h2 className="text-2xl font-semibold tracking-[-0.03em]">Adaptations to water stress and pastoralism</h2>
-            <p className="mt-4 text-base leading-8 text-[#4c5348]">Work on the genetic basis of dehydration resilience in the Turkana people of northern Kenya.</p>
+            <h2 className="text-3xl font-semibold tracking-[-0.03em]">Adaptations to water stress and pastoralism</h2>
+            <p className="mt-5 text-base leading-8 text-[#4c5348]">
+              <strong className="font-semibold text-[#20231f]">COVER:</strong> Young Turkana herders guide camels across Kenya’s arid landscape near Lake Turkana at sunset. Pastoralism remains central to survival in this region, where heat and water scarcity pose constant challenges. New research uncovers the genetic signatures that underlie adaptation to arid living in this pastoralist community. In pages{" "}
+              <a className="font-semibold text-[#637357] underline decoration-[#8a6f2c]/50 underline-offset-4 hover:text-[#3f5039]" href="https://www.science.org/doi/10.1126/science.aeb2287" target="_blank" rel="noreferrer">1191</a>{" "}
+              and{" "}
+              <a className="font-semibold text-[#637357] underline decoration-[#8a6f2c]/50 underline-offset-4 hover:text-[#3f5039]" href="https://www.science.org/doi/10.1126/science.adv2467" target="_blank" rel="noreferrer">1246</a>{" "}
+              of this issue.
+            </p>
+            <p className="mt-5 border-t border-[#8a6f2c]/20 pt-4 text-sm italic leading-6 text-[#5d6658]">Photo: Kirsten Frost/FROST Photo Tours</p>
           </div>
         </article>
         <div className="mx-auto max-w-7xl divide-y divide-[#20231f]/10 overflow-hidden rounded-[2rem] border border-[#20231f]/10 bg-white shadow-sm">
