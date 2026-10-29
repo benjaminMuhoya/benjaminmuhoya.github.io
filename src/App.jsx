@@ -500,8 +500,9 @@ function GalleryPage() {
             if (!event.currentTarget.contains(event.relatedTarget)) setFocusWithin(false);
           }}>
           <div className="overflow-hidden rounded-[2.4rem] border border-[#20231f]/10 bg-white p-3 shadow-sm sm:p-4">
-            <motion.div className="relative mx-auto h-[260px] max-w-5xl cursor-grab overflow-hidden rounded-[1.8rem] bg-[#eef0e6] active:cursor-grabbing sm:h-[320px] lg:h-[360px]"
-              drag={shouldReduceMotion ? false : "x"} dragConstraints={{ left: 0, right: 0 }} dragElastic={0.1}
+            <motion.div className="relative mx-auto h-[260px] max-w-5xl cursor-grab overflow-hidden rounded-[1.8rem] bg-white active:cursor-grabbing sm:h-[320px] lg:h-[360px]"
+              style={{ touchAction: "pan-y" }}
+              drag="x" dragConstraints={{ left: 0, right: 0 }} dragElastic={0.1} dragMomentum={false}
               onDragEnd={(_, info) => {
                 if (info.offset.x < -55) moveCarousel(1);
                 if (info.offset.x > 55) moveCarousel(-1);
@@ -513,9 +514,9 @@ function GalleryPage() {
                     initial="enter" animate="visible" exit="exit"
                     transition={{ duration: shouldReduceMotion ? 0 : transitionDuration, ease: transitionDuration > 1 ? "linear" : [0.22, 1, 0.36, 1] }}
                     style={{ zIndex: image.offset === 0 ? 2 : 1 }}>
-                    <figure className="h-[82%] w-[68%] overflow-hidden rounded-[1.4rem] bg-[#e9eadf] shadow-sm sm:w-[50%] lg:w-[44%]">
+                    <figure className="h-[82%] w-[68%] overflow-hidden rounded-[1.4rem] bg-white shadow-sm sm:w-[50%] lg:w-[44%]">
                       <img src={image.src} alt={image.offset === 0 ? image.caption : ""} aria-hidden={image.offset !== 0}
-                        className="h-full w-full object-cover" />
+                        draggable={false} className="h-full w-full object-cover" />
                     </figure>
                   </motion.div>
                 ))}
@@ -580,9 +581,8 @@ export default function PersonalWebsite() {
       <SiteHeader page={page} />
       <main className={page ? "xl:pr-[330px]" : ""}>{page && <ProfileContact />}<Page /></main>
       <footer className={`border-t border-[#20231f]/10 px-4 py-8 sm:px-6 lg:px-8 ${page ? "xl:pr-[350px]" : ""}`}>
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-3 text-sm text-[#5d6658] sm:flex-row">
-          <p>© 2026 Benjamin Muhoya.</p>
-          <p>Context dependency of metabolism</p>
+        <div className="mx-auto max-w-7xl text-center text-sm text-[#5d6658]">
+          <p>Metabolism is life in motion and the metabolome is a real time map</p>
         </div>
       </footer>
     </div>
