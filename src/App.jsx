@@ -112,18 +112,18 @@ const publications = [
     status: "published",
   },
   {
-    title: "Socioeconomic status effects on health vary between rural and urban Turkana.",
-    authors: "Lea A. J., Waigwa C., Muhoya B., Lotukoi F., Peng J., Henry L., Abhyankar V., et al.",
-    journal: "Evolution, Medicine, and Public Health (2021), 9(1): 406–419",
-    link: "https://doi.org/10.1093/emph/eoab039",
-    status: "published",
-  },
-  {
     title: "Sex differences in immune function and disease risk are not easily explained by an evolutionary mismatch.",
     authors: "Arner A. M., Muhoya B., Snyder-Mackler N., Ayroles J. F., & Lea A. J.",
     journal: "bioRxiv (2024) · Preprint",
     link: "https://doi.org/10.1101/2024.02.13.580011",
     status: "preprint",
+  },
+  {
+    title: "Socioeconomic status effects on health vary between rural and urban Turkana.",
+    authors: "Lea A. J., Waigwa C., Muhoya B., Lotukoi F., Peng J., Henry L., Abhyankar V., et al.",
+    journal: "Evolution, Medicine, and Public Health (2021), 9(1): 406–419",
+    link: "https://doi.org/10.1093/emph/eoab039",
+    status: "published",
   },
 ];
 
