@@ -85,6 +85,12 @@ const currentProjects = [
 
 const publications = [
   {
+    title: "Divergent biological consequences of APOE isoforms across industrialized and non-industrial environments.",
+    authors: "Watowich M. M., Petersen R. M., Brassington L., Arner A. M., Rodenberg G., et al., including Muhoya B.",
+    journal: "PLOS Genetics (2026), 22(9): e1012285",
+    link: "https://doi.org/10.1371/journal.pgen.1012285",
+  },
+  {
     title: "Built environment is a key driver of cardiometabolic health in two Indigenous groups undergoing rapid lifestyle change.",
     authors: "Watowich M. M., Arner A. M., Wang S., John E., Kahumbu J. C., Kinyua P., Lopurudoi A., Lotukoi F., Mwai C. M., Muhoya B., et al.",
   },
@@ -418,6 +424,8 @@ function PublicationsPage() {
               <div>
                 <h2 className="text-xl font-semibold leading-snug tracking-[-0.02em]">{item.title}</h2>
                 <p className="mt-3 text-sm leading-7 text-[#5d6658]">{formatAuthors(item.authors)}</p>
+                {item.journal && <p className="mt-1 text-sm italic text-[#5d6658]">{item.journal}</p>}
+                {item.link && <a href={item.link} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[#637357] underline underline-offset-4">Read publication <ExternalLink className="h-3.5 w-3.5" /></a>}
               </div>
             </article>
           ))}
