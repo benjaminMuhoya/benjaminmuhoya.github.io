@@ -93,22 +93,37 @@ const publications = [
   {
     title: "Built environment is a key driver of cardiometabolic health in two Indigenous groups undergoing rapid lifestyle change.",
     authors: "Watowich M. M., Arner A. M., Wang S., John E., Kahumbu J. C., Kinyua P., Lopurudoi A., Lotukoi F., Mwai C. M., Muhoya B., et al.",
+    journal: "Evolution, Medicine, and Public Health (2026), 14(1): 1–16",
+    link: "https://doi.org/10.1093/emph/eoag007",
+    status: "published",
   },
   {
     title: "Urbanization exacerbates age-associated declines in cardiometabolic health in Turkana and Orang Asli.",
     authors: "Watowich M. M., Brassington L., Longtin A., Wang S., Rossow R., Reinhardt K. D., John E., Kahumbu J. C., Kinyua P., Lopurudoi A., Lotukoi F., Miano C., Muhoya B., et al.",
+    journal: "medRxiv (2025) · Preprint",
+    link: "https://doi.org/10.1101/2025.06.06.25329160",
+    status: "preprint",
   },
   {
     title: "Adaptations to water stress and pastoralism.",
     authors: "Lea A. J., Caldas I. V., Garske K. M., Kahumbu J., Kinyua P., Miano C., Muhoya B., Peng J., Rabinowitz J. D., Roichman A., et al.",
+    journal: "Science (2025), 389(6766): 1246–1251",
+    link: "https://doi.org/10.1126/science.adv2467",
+    status: "published",
   },
   {
     title: "Socioeconomic status effects on health vary between rural and urban Turkana.",
     authors: "Lea A. J., Waigwa C., Muhoya B., Lotukoi F., Peng J., Henry L., Abhyankar V., et al.",
+    journal: "Evolution, Medicine, and Public Health (2021), 9(1): 406–419",
+    link: "https://doi.org/10.1093/emph/eoab039",
+    status: "published",
   },
   {
     title: "Sex differences in immune function and disease risk are not easily explained by an evolutionary mismatch.",
     authors: "Arner A. M., Muhoya B., Snyder-Mackler N., Ayroles J. F., & Lea A. J.",
+    journal: "bioRxiv (2024) · Preprint",
+    link: "https://doi.org/10.1101/2024.02.13.580011",
+    status: "preprint",
   },
 ];
 
@@ -425,7 +440,7 @@ function PublicationsPage() {
                 <h2 className="text-xl font-semibold leading-snug tracking-[-0.02em]">{item.title}</h2>
                 <p className="mt-3 text-sm leading-7 text-[#5d6658]">{formatAuthors(item.authors)}</p>
                 {item.journal && <p className="mt-1 text-sm italic text-[#5d6658]">{item.journal}</p>}
-                {item.link && <a href={item.link} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[#637357] underline underline-offset-4">Read publication <ExternalLink className="h-3.5 w-3.5" /></a>}
+                {item.link && <a href={item.link} target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[#637357] underline underline-offset-4">{item.status === "preprint" ? "Read preprint" : "Read publication"} <ExternalLink className="h-3.5 w-3.5" /></a>}
               </div>
             </article>
           ))}
